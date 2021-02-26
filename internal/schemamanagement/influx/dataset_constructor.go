@@ -2,6 +2,7 @@ package influx
 
 import (
 	"fmt"
+	"log"
 
 	influx "github.com/influxdata/influxdb/client/v2"
 	"github.com/timescale/outflux/internal/idrf"
@@ -49,10 +50,22 @@ func (d *defaultDSConstructor) construct(measure string) (*idrf.DataSet, error) 
 		return nil, fmt.Errorf("could not discover the fields of measure '%s'\n%v", measure, err)
 	}
 
-	idrfTimeColumn, _ := idrf.NewColumn("time", idrf.IDRFTimestamp)
-	allColumns := []*idrf.Column{idrfTimeColumn}
-	allColumns = append(allColumns, idrfTags...)
-	allColumns = append(allColumns, idrfFields...)
+	columnsByName := make(map[string]*idrf.Column)
+	columnsByName["time"], _ = idrf.NewColumn("time", idrf.IDRFTimestamp)
+	for _, fieldColumn := range idrfFields {
+		columnsByName[fieldColumn.Name] = fieldColumn
+	}
+	for _, tagColumn := range idrfTags {
+		if _, exists := columnsByName[tagColumn.Name]; exists {
+			log.Printf("Skipping tag %s because a field with that name exists\n", tagColumn.Name)
+		} else {
+			columnsByName[tagColumn.Name] = tagColumn
+		}
+	}
+	allColumns := []*idrf.Column{}
+	for _, column := range columnsByName {
+		allColumns = append(allColumns, column)
+	}
 	dataSet, err := idrf.NewDataSet(measure, allColumns, "time")
 	return dataSet, err
 }

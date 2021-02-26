@@ -50,7 +50,14 @@ func buildMeasurementName(rp, measurement string) string {
 func buildProjection(columns []*idrf.Column) string {
 	columnNames := make([]string, len(columns))
 	for i, column := range columns {
-		columnNames[i] = fmt.Sprintf(`"%s"`, column.Name)
+		kindSuffix := ""
+		switch column.ColumnKind {
+		case idrf.ColumnKindTag:
+			kindSuffix = "::tag"
+		case idrf.ColumnKindField:
+			kindSuffix = "::field"
+		}
+		columnNames[i] = fmt.Sprintf(`"%s"%s`, column.Name, kindSuffix)
 	}
 
 	return strings.Join(columnNames, ", ")

@@ -68,7 +68,7 @@ func (te *defaultTagExplorer) fetchMeasurementTags(influxClient influx.Client, d
 func convertTags(tags []string) ([]*idrf.Column, error) {
 	columns := make([]*idrf.Column, len(tags))
 	for i, tag := range tags {
-		idrfColumn, err := idrf.NewColumn(tag, idrf.IDRFString)
+		idrfColumn, err := idrf.NewColumn(tag, idrf.IDRFString, idrf.ColumnKindTag)
 
 		if err != nil {
 			return nil, fmt.Errorf("Could not convert tags to IDRF. \n%v" + err.Error())

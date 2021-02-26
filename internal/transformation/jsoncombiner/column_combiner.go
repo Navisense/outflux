@@ -26,7 +26,7 @@ func (d *defColCombiner) combine(
 	for _, originalColumn := range originalColumns {
 		_, shouldReplaceColumn := columnNamesToReplace[originalColumn.Name]
 		if shouldReplaceColumn && !jsonColumnAdded {
-			newColumns[currentColumn], _ = idrf.NewColumn(resultColumnName, idrf.IDRFJson)
+			newColumns[currentColumn], _ = idrf.NewColumn(resultColumnName, idrf.IDRFJson, idrf.ColumnKindGeneral)
 			jsonColumnAdded = true
 		} else if shouldReplaceColumn && jsonColumnAdded {
 			continue

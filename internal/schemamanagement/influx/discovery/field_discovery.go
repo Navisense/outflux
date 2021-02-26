@@ -87,8 +87,8 @@ func convertFields(fieldsWithType [][2]string, convertInt64ToFloat64 bool) ([]*i
 	}
 	sort.Strings(columnNames)
 	for i, columnName := range columnNames {
-		columnType := columnMap[columnName]
-		idrfColumn, err := idrf.NewColumn(columnName, columnType)
+		dataType := columnMap[columnName]
+		idrfColumn, err := idrf.NewColumn(columnName, dataType, idrf.ColumnKindField)
 
 		if err != nil {
 			return nil, fmt.Errorf("could not convert field to Intermediate Data Representation Format. \n%v", err.Error())

@@ -6,8 +6,8 @@ import (
 )
 
 func TestNewDataSet(t *testing.T) {
-	column, _ := NewColumn("Col 1", IDRFTimestamp)
-	intColumn, _ := NewColumn("Col 1", IDRFInteger32)
+	column, _ := NewColumn("Col 1", IDRFTimestamp, ColumnKindGeneral)
+	intColumn, _ := NewColumn("Col 1", IDRFInteger32, ColumnKindGeneral)
 	columns := []*Column{column}
 	noTimestampTimeColumns := []*Column{intColumn}
 	if _, error := NewDataSet("", columns, "Col 1"); error == nil {
@@ -56,7 +56,7 @@ func TestColumnNamed(t *testing.T) {
 
 	expectedColumnType := IDRFTimestamp
 
-	column, _ := NewColumn(goodColumnName, expectedColumnType)
+	column, _ := NewColumn(goodColumnName, expectedColumnType, ColumnKindGeneral)
 	columns := []*Column{column}
 	dataSet, _ := NewDataSet("Data Set", columns, "Col 1")
 

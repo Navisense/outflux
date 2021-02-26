@@ -3,11 +3,11 @@ package idrf
 import "testing"
 
 func TestNewColumn(t *testing.T) {
-	if _, err := NewColumn("", IDRFBoolean); err == nil {
+	if _, err := NewColumn("", IDRFBoolean, ColumnKindGeneral); err == nil {
 		t.Error("expected error, none received")
 	}
 
-	res, err := NewColumn("some name", IDRFBoolean)
+	res, err := NewColumn("some name", IDRFBoolean, ColumnKindGeneral)
 	if res == nil || err != nil {
 		t.Errorf("unexpected error: %v", err)
 	}

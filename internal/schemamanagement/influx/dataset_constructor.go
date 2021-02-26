@@ -61,7 +61,7 @@ func (d *defaultDSConstructor) construct(measure string) (*idrf.DataSet, error) 
 			columnsByName[tagColumn.Name] = tagColumn
 		}
 	}
-	idrfTimeColumn, _ := idrf.NewColumn("time", idrf.IDRFTimestamp)
+	idrfTimeColumn, _ := idrf.NewColumn("time", idrf.IDRFTimestamp, idrf.ColumnKindGeneral)
 	allColumns := []*idrf.Column{idrfTimeColumn}
 	for _, column := range columnsByName {
 		allColumns = append(allColumns, column)

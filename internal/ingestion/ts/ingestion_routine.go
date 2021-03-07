@@ -3,6 +3,7 @@ package ts
 import (
 	"fmt"
 	"log"
+	"strings"
 
 	"github.com/jackc/pgx"
 	"github.com/timescale/outflux/internal/connections"
@@ -75,6 +76,11 @@ func (routine *defaultRoutine) ingest(args *ingestDataArgs) error {
 	}
 
 	for row := range args.dataChannel {
+		for i := range row {
+			if stringColumn, ok := row[i].(string); ok {
+				row[i] = strings.ReplaceAll(stringColumn, "\x00", "")
+			}
+		}
 		batch[batchInserts] = row
 		batchInserts++
 		if batchInserts < args.batchSize {
